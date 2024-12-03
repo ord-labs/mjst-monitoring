@@ -8,7 +8,6 @@ import {
 import { extractErrorMessage } from "../../utils/extractJoiError";
 import bcrypt from "bcrypt";
 import Manuscript from "./manuscript.model";
-import { generateToken } from "../../utils/jwtHelper";
 
 /*
  * Extra Handlers

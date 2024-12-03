@@ -62,13 +62,6 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         timestamps: {
             createdAt: "created_at",
             updatedAt: "updated_at"
-        },
-        toJSON: {
-            transform: (doc, ret) => {
-                delete ret.password;
-                delete ret.__v;
-                return ret;
-            }
         }
     }
 );
