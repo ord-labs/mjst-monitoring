@@ -5,7 +5,7 @@ import { authenticated } from "../../config/passport.jwt.config";
 const router = express.Router();
 
 router.get("/", authenticated, getManuscript);
-router.post("/", createManuscript);
+router.post("/", authenticated, createManuscript);
 router.put("/:manuscriptId", authenticated, updateManuscript);
 router.delete("/:manuscriptId", authenticated, deleteManuscript);
 
