@@ -30,6 +30,7 @@ export interface ManuscriptDoc extends Document {
     rejectReason: string;
     rejectDate: Date;
     comments: string;
+    stepStatus: "Pre-Review" | "Double-Blind" | "Layouting" | "Final Proofreading" | "Published";
 }
 
 const ManuscriptSchema = new Schema<ManuscriptDoc>(
@@ -56,7 +57,8 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         datePublished: { type: Date, default: null },
         rejectReason: { type: String, default: null },
         rejectDate: { type: Date, default: null },
-        comments: { type: String, default: null }
+        comments: { type: String, default: null },
+        stepStatus: { type: String, default: "Pre-Review" }
     },
     {
         timestamps: {
