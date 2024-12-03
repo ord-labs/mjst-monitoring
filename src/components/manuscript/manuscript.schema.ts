@@ -31,7 +31,8 @@ export const createManuscriptSchema = Joi.object({
     datePublished: Joi.string().trim().label("Date Published"),
     rejectReason: Joi.string().trim().label("Reject Reason"),
     rejectDate: Joi.string().trim().label("Reject Date"),
-    comments: Joi.string().trim().label("Comments")
+    comments: Joi.string().trim().label("Comments"),
+    stepStatus: Joi.string().trim().label("Step Status")
 });
 
 export const getManuscriptByIdSchema = Joi.object({
@@ -70,7 +71,8 @@ export const updateManuscriptSchema = Joi.object({
     datePublished: Joi.string().trim().label("Date Published"),
     rejectReason: Joi.string().trim().label("Reject Reason"),
     rejectDate: Joi.string().trim().label("Reject Date"),
-    comments: Joi.string().trim().label("Comments")
+    comments: Joi.string().trim().label("Comments"),
+    stepStatus: Joi.string().trim().label("Step Status")
 });
 
 export const deleteManuscriptSchema = Joi.object({

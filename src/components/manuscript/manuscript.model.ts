@@ -30,7 +30,7 @@ export interface ManuscriptDoc extends Document {
     rejectReason: string;
     rejectDate: Date;
     comments: string;
-    stepStatus: "Pre-Review" | "Double-Blind" | "Layouting" | "Final Proofreading" | "Published";
+    stepStatus: "Pre-Review" | "Double-Blind" | "Layouting" | "Final Proofreading" | "Published" | "Rejected";
 }
 
 const ManuscriptSchema = new Schema<ManuscriptDoc>(
