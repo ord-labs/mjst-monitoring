@@ -9,6 +9,8 @@ interface AppConfig {
     APP_SECRET: string;
     GOOGLE_ID: string;
     GOOGLE_SECRET: string;
+    SMTP_EMAIL: string;
+    SMTP_PASSWORD: string;
 }
 
 const appConfig: AppConfig = {
@@ -17,7 +19,9 @@ const appConfig: AppConfig = {
     MONGO_URI: process.env.MONGO_URI ?? "",
     APP_SECRET: process.env.APP_SECRET ?? "",
     GOOGLE_ID: process.env.GOOGLE_ID ?? "",
-    GOOGLE_SECRET: process.env.GOOGLE_SECRET ?? ""
+    GOOGLE_SECRET: process.env.GOOGLE_SECRET ?? "",
+    SMTP_EMAIL: process.env.SMTP_EMAIL ?? "",
+    SMTP_PASSWORD: process.env.SMTP_PASSWORD ?? ""
 };
 
 export default appConfig;
