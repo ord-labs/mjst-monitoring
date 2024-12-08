@@ -1,10 +1,10 @@
 {
-    "name": "dwellu-backend",
-    "version": "1.2.0",
-    "description": "Dwellu real estate app backend",
+    "name": "mjst-backend",
+    "version": "0.0.1",
+    "description": "MJST Monitoring System Backend",
     "main": "src/index.ts",
     "scripts": {
-        "start": "node ./dist/src",
+        "start": "node dist/src",
         "dev": "nodemon src/index.ts",
         "build": "tsc",
         "lint": "eslint --fix src test",
