@@ -4,7 +4,7 @@
     "description": "MJST Monitoring System Backend",
     "main": "src/index.ts",
     "scripts": {
-        "start": "node dist/src",
+        "start": "node dist",
         "dev": "nodemon src/index.ts",
         "build": "tsc",
         "lint": "eslint --fix src test",
