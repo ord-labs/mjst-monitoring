@@ -4,9 +4,9 @@ import { sendEmail } from "../../utils/mailer";
 
 export const sendMail = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const msg = req.body.message;
+        const { message, subject, recipients } = req.body;
 
-        const mail = await sendEmail(["timajokyle24@gmail.com"], "Sample Subject", msg);
+        const mail = await sendEmail(recipients, subject, message);
 
         if (mail) {
             return jsonResponse(res, { status: 200, message: "Email sent successfully" });
