@@ -20,7 +20,7 @@ const getEditorById = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-const getEditors = async (req: Request, res: Response, next: NextFunction) => {
+export const getEditors = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const editors = await Editor.find();
         if (editors) {

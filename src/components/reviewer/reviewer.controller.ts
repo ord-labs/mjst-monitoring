@@ -20,7 +20,7 @@ const getReviewerById = async (req: Request, res: Response, next: NextFunction) 
     }
 };
 
-const getReviewers = async (req: Request, res: Response, next: NextFunction) => {
+export const getReviewers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const reviewers = await Reviewer.find();
         if (reviewers) {
