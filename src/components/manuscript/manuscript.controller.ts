@@ -25,6 +25,21 @@ const getManuscriptById = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+export const getManuscriptByStepStatus = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { stepStatus } = req.body;
+
+        const manuscripts = await Manuscript.find({ stepStatus });
+
+        if (manuscripts) {
+            return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
+        }
+        return next(errorResponse(400, "Manuscripts not found"));
+    } catch (e) {
+        return next(errorResponse(400, (e as Error).message));
+    }
+};
+
 const getManuscripts = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const manuscripts = await Manuscript.find();
