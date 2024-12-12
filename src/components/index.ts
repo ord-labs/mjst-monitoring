@@ -3,6 +3,7 @@ import ApiResponse from "../interfaces/ApiResponse";
 import userRouter from "./user/user.route";
 import authRouter from "./auth/auth.route";
 import reviewerRouter from "./reviewer/reviewer.route";
+import editorRouter from "./editor/editor.route";
 import mailRouter from "./mail/mail.route";
 
 const router = Router();
@@ -15,6 +16,7 @@ router.get<ApiResponse>("/", (req, res) => {
 
 router.use("/user", userRouter);
 router.use("/auth", authRouter);
+router.use("/editor", editorRouter);
 router.use("/reviewer", reviewerRouter);
 router.use("/mail", mailRouter);
 
