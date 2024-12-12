@@ -5,7 +5,6 @@ import { authenticated } from "../../config/passport.jwt.config";
 const router = express.Router();
 
 router.get("/", authenticated, getReviewer);
-router.get("/:reviewerId", authenticated, getReviewer);
 router.post("/", authenticated, createReviewer);
 router.put("/:reviewerId", authenticated, updateReviewer);
 router.delete("/:reviewerId", authenticated, deleteReviewer);
