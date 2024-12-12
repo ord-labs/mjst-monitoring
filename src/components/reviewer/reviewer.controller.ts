@@ -100,6 +100,8 @@ export const updateReviewer = async (req: Request, res: Response, next: NextFunc
     try {
         const id: string = req.params.reviewerId;
 
+        console.log(id, req.body);
+
         const reviewer = await Reviewer.findOneAndUpdate({ _id: id, status: true }, req.body, { new: true });
 
         if (reviewer) {
