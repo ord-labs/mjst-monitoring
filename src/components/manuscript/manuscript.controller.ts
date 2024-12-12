@@ -141,7 +141,7 @@ export const updateManuscript = async (req: Request, res: Response, next: NextFu
     try {
         const id: string = req.params.manuscriptId;
 
-        const manuscript = await Manuscript.findOneAndUpdate({ _id: id, status: true }, req.body, { new: true });
+        const manuscript = await Manuscript.findOneAndUpdate({ _id: id }, req.body, { new: true });
 
         if (manuscript) {
             return jsonResponse(res, {
