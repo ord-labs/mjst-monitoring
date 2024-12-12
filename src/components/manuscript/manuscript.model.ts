@@ -16,7 +16,7 @@ export interface ManuscriptDoc extends Document {
     authorEmail: string;
     editor: Types.ObjectId;
     affiliation: string;
-    status: "in progress" | "for revision" | "published";
+    status: "In Progress" | "For Revision" | "Published";
     reviewers: Types.ObjectId[];
     layoutArtistName: string;
     layoutArtistEmail: string;
@@ -44,7 +44,7 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         authorEmail: { type: String, required: true },
         editor: { type: Schema.Types.ObjectId, ref: "Editor" },
         affiliation: { type: String, required: true },
-        status: { type: String, enum: ManuscriptStatus, required: true },
+        status: { type: String, enum: ManuscriptStatus, required: true, default: "In Progress" },
         reviewers: [{ type: Schema.Types.ObjectId, ref: "Reviewer" }],
         layoutArtistName: { type: String, default: null },
         layoutArtistEmail: { type: String, default: null },

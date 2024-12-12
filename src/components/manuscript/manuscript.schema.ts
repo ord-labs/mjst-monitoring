@@ -13,26 +13,28 @@ export const createManuscriptSchema = Joi.object({
         .label("Author Email"),
     editor: Joi.string().trim().required().label("Editor"),
     affiliation: Joi.string().trim().required().label("Field"),
-    status: Joi.string().trim().label("Status"),
-    layoutArtistName: Joi.string().trim().label("Layout Artist name"),
+    status: Joi.string().trim().optional().label("Status"),
+    layoutArtistName: Joi.string().trim().optional().label("Layout Artist name"),
     layoutArtistEmail: Joi.string()
         .email({ tlds: { allow: false } })
         .trim()
+        .optional()
         .label("Layout Artist Email"),
-    dateAccepted: Joi.string().trim().label("Date Accepted"),
-    proofReaderName: Joi.string().trim().label("Proof Reader Name"),
+    dateAccepted: Joi.string().trim().optional().label("Date Accepted"),
+    proofReaderName: Joi.string().trim().optional().label("Proof Reader Name"),
     proofReaderEmail: Joi.string()
         .email({ tlds: { allow: false } })
         .trim()
+        .optional()
         .label("Proof Reader Email"),
-    dateSent: Joi.string().trim().label("Date Sent"),
-    scope: Joi.string().trim().label("Scope"),
-    volumeYear: Joi.string().trim().label("Volume Year"),
-    datePublished: Joi.string().trim().label("Date Published"),
-    rejectReason: Joi.string().trim().label("Reject Reason"),
-    rejectDate: Joi.string().trim().label("Reject Date"),
-    comments: Joi.string().trim().label("Comments"),
-    stepStatus: Joi.string().trim().label("Step Status")
+    dateSent: Joi.string().trim().optional().label("Date Sent"),
+    scope: Joi.string().trim().optional().label("Scope"),
+    volumeYear: Joi.string().trim().optional().label("Volume Year"),
+    datePublished: Joi.string().trim().optional().label("Date Published"),
+    rejectReason: Joi.string().trim().optional().label("Reject Reason"),
+    rejectDate: Joi.string().trim().optional().label("Reject Date"),
+    comments: Joi.string().trim().optional().label("Comments"),
+    stepStatus: Joi.string().trim().optional().label("Step Status")
 });
 
 export const getManuscriptByIdSchema = Joi.object({
@@ -41,38 +43,41 @@ export const getManuscriptByIdSchema = Joi.object({
 
 export const updateManuscriptSchema = Joi.object({
     manuscriptId: Joi.string().trim().required().label("manuscriptId"),
-    title: Joi.string().trim().label("Title"),
-    fieldScope: Joi.string().trim().label("Field"),
-    fieldScopeAbbr: Joi.string().trim().label("Field Abbreviation"),
-    dateSubmitted: Joi.string().trim().label("Date Submitted"),
-    authors: Joi.array().items(Joi.string()).label("Authors"),
+    title: Joi.string().trim().optional().label("Title"),
+    fieldScope: Joi.string().trim().optional().label("Field"),
+    fieldScopeAbbr: Joi.string().trim().optional().label("Field Abbreviation"),
+    dateSubmitted: Joi.string().trim().optional().label("Date Submitted"),
+    authors: Joi.array().items(Joi.string()).optional().label("Authors"),
     authorEmail: Joi.string()
         .email({ tlds: { allow: false } })
         .trim()
+        .optional()
         .label("Author Email"),
-    editor: Joi.string().trim().label("Editor"),
-    reviewers: Joi.array().items(Joi.string()).label("Reviewers"),
-    affiliation: Joi.string().trim().label("Field"),
-    status: Joi.string().trim().label("Status"),
-    layoutArtistName: Joi.string().trim().label("Layout Artist name"),
+    editor: Joi.string().trim().optional().label("Editor"),
+    reviewers: Joi.array().items(Joi.string()).optional().label("Reviewers"),
+    affiliation: Joi.string().trim().optional().label("Field"),
+    status: Joi.string().trim().optional().label("Status"),
+    layoutArtistName: Joi.string().trim().optional().label("Layout Artist name"),
     layoutArtistEmail: Joi.string()
         .email({ tlds: { allow: false } })
         .trim()
+        .optional()
         .label("Layout Artist Email"),
-    dateAccepted: Joi.string().trim().label("Date Accepted"),
-    proofReaderName: Joi.string().trim().label("Proof Reader Name"),
+    dateAccepted: Joi.string().trim().optional().label("Date Accepted"),
+    proofReaderName: Joi.string().trim().optional().label("Proof Reader Name"),
     proofReaderEmail: Joi.string()
         .email({ tlds: { allow: false } })
         .trim()
+        .optional()
         .label("Proof Reader Email"),
-    dateSent: Joi.string().trim().label("Date Sent"),
-    scope: Joi.string().trim().label("Scope"),
-    volumeYear: Joi.string().trim().label("Volume Year"),
-    datePublished: Joi.string().trim().label("Date Published"),
-    rejectReason: Joi.string().trim().label("Reject Reason"),
-    rejectDate: Joi.string().trim().label("Reject Date"),
-    comments: Joi.string().trim().label("Comments"),
-    stepStatus: Joi.string().trim().label("Step Status")
+    dateSent: Joi.string().trim().optional().label("Date Sent"),
+    scope: Joi.string().trim().optional().label("Scope"),
+    volumeYear: Joi.string().trim().optional().label("Volume Year"),
+    datePublished: Joi.string().trim().optional().label("Date Published"),
+    rejectReason: Joi.string().trim().optional().label("Reject Reason"),
+    rejectDate: Joi.string().trim().optional().label("Reject Date"),
+    comments: Joi.string().trim().optional().label("Comments"),
+    stepStatus: Joi.string().trim().optional().label("Step Status")
 });
 
 export const deleteManuscriptSchema = Joi.object({

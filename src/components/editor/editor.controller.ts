@@ -100,7 +100,7 @@ export const updateEditor = async (req: Request, res: Response, next: NextFuncti
     try {
         const id: string = req.params.editorId;
 
-        const editor = await Editor.findOneAndUpdate({ _id: id, status: true }, req.body, { new: true });
+        const editor = await Editor.findOneAndUpdate({ _id: id }, req.body, { new: true });
 
         if (editor) {
             return jsonResponse(res, {
