@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
 
-export interface ReviewerDoc extends Document {
+export interface EditorDoc extends Document {
     firstname: string;
     middlename: string;
     lastname: string;
@@ -10,7 +10,7 @@ export interface ReviewerDoc extends Document {
     profileLink: string;
 }
 
-const ReviewerSchema = new Schema<ReviewerDoc>(
+const EditorSchema = new Schema<EditorDoc>(
     {
         firstname: { type: String, required: true },
         middlename: { type: String, required: true },
@@ -28,4 +28,4 @@ const ReviewerSchema = new Schema<ReviewerDoc>(
     }
 );
 
-export default model<ReviewerDoc>("Reviewer", ReviewerSchema);
+export default model<EditorDoc>("Editor", EditorSchema);
