@@ -7,7 +7,7 @@ export const createEditorSchema = Joi.object({
     email: Joi.string().trim().required().label("Email"),
     position: Joi.string().trim().required().label("Position"),
     department: Joi.string().trim().required().label("Department"),
-    profileLink: Joi.string().trim().label("Profile Link")
+    profileLink: Joi.string().trim().optional().label("Profile Link")
 });
 
 export const getEditorByIdSchema = Joi.object({
