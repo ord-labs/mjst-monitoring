@@ -1,12 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { errorResponse, jsonResponse } from "../../utils/apiResponse";
-import {
-    createManuscriptSchema,
-    deleteManuscriptSchema,
-    updateManuscriptSchema
-} from "../manuscript/manuscript.schema";
+import { deleteManuscriptSchema } from "../manuscript/manuscript.schema";
 import { extractErrorMessage } from "../../utils/extractJoiError";
-import bcrypt from "bcrypt";
 import Manuscript from "./manuscript.model";
 
 /*
@@ -61,19 +56,13 @@ export const getManuscript = async (req: Request, res: Response, next: NextFunct
  * @params BODY createManuscriptSchema
  */
 export const createManuscript = async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = createManuscriptSchema.validate(req.body, { abortEarly: false });
-
-    if (error) {
-        const errorMessages: string[] = extractErrorMessage(error);
-        return next(errorResponse(400, "Invalid parameters", errorMessages));
-    }
-
     try {
         let newManuscript = req.body;
 
-        const docCount = Manuscript.countDocuments();
+        const docCount = (await countManuscriptStartingWith(newManuscript.scopeCode)) + 1;
+        const fileCodeNumber = formatFileCodeNumber(docCount);
 
-        newManuscript.fileCode = `${newManuscript.fieldScopeAbbr}${docCount}`;
+        newManuscript.fileCode = `${newManuscript.scopeCode}${fileCodeNumber}`;
 
         const manuscript = await Manuscript.create(newManuscript);
 
@@ -97,15 +86,6 @@ export const createManuscript = async (req: Request, res: Response, next: NextFu
  * @params updateManuscriptSchema
  */
 export const updateManuscript = async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = updateManuscriptSchema.validate(
-        { ...req.body, manuscriptId: req.params.manuscriptId },
-        { abortEarly: false }
-    );
-    if (error) {
-        const errorMessages: string[] = extractErrorMessage(error);
-        return next(errorResponse(400, "Invalid parameters", errorMessages));
-    }
-
     try {
         const id: string = req.params.manuscriptId;
 
@@ -156,5 +136,29 @@ export const deleteManuscript = async (req: Request, res: Response, next: NextFu
         return next(errorResponse(400, "Manuscript not found"));
     } catch (e) {
         return next(errorResponse(400, (e as Error).message));
+    }
+};
+
+const countManuscriptStartingWith = async (scopeCode) => {
+    try {
+        const count = await Manuscript.countDocuments({
+            name: { $regex: `^${scopeCode}`, $options: "i" } // 'i' makes it case-insensitive
+        });
+        return count;
+    } catch (error) {
+        return 0;
+    }
+};
+
+const formatFileCodeNumber = (count) => {
+    switch (count.toString().length) {
+        case 1:
+            return `000${count}`;
+        case 2:
+            return `00${count}`;
+        case 3:
+            return `0${count}`;
+        default:
+            return count.toString();
     }
 };
