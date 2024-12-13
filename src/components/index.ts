@@ -5,6 +5,7 @@ import authRouter from "./auth/auth.route";
 import reviewerRouter from "./reviewer/reviewer.route";
 import editorRouter from "./editor/editor.route";
 import mailRouter from "./mail/mail.route";
+import manuscriptRouter from "./manuscript/manuscript.route";
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use("/auth", authRouter);
 router.use("/editor", editorRouter);
 router.use("/reviewer", reviewerRouter);
 router.use("/mail", mailRouter);
+router.use("/manuscript", manuscriptRouter);
 
 export default router;

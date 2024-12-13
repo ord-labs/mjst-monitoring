@@ -20,6 +20,38 @@ const getManuscriptById = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+export const getManuscriptByStepStatus = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let stepQuery = req.query.stepStatus;
+        let stepStatus = "";
+
+        if (stepQuery === "pre-review") {
+            stepStatus = "Pre-Review";
+        }
+
+        if (stepQuery === "double-blind") {
+            stepStatus = "Double-Blind";
+        }
+
+        if (stepQuery === "layouting") {
+            stepStatus = "Layouting";
+        }
+
+        if (stepQuery === "final-proofreading") {
+            stepStatus = "Final Proofreading";
+        }
+
+        const manuscripts = await Manuscript.find({ stepStatus });
+
+        if (manuscripts) {
+            return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
+        }
+        return next(errorResponse(400, "Manuscripts not found"));
+    } catch (e) {
+        return next(errorResponse(400, (e as Error).message));
+    }
+};
+
 const getManuscripts = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const manuscripts = await Manuscript.find();
@@ -89,7 +121,7 @@ export const updateManuscript = async (req: Request, res: Response, next: NextFu
     try {
         const id: string = req.params.manuscriptId;
 
-        const manuscript = await Manuscript.findOneAndUpdate({ _id: id, status: true }, req.body, { new: true });
+        const manuscript = await Manuscript.findOneAndUpdate({ _id: id }, req.body, { new: true });
 
         if (manuscript) {
             return jsonResponse(res, {
