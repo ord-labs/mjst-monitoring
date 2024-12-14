@@ -24,26 +24,9 @@ const getManuscriptById = async (req: Request, res: Response, next: NextFunction
 
 export const getManuscriptByStepStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        let stepQuery = req.query.stepStatus;
-        let stepStatus = "";
+        const status = req.query.status;
 
-        if (stepQuery === "pre-review") {
-            stepStatus = "Pre-Review";
-        }
-
-        if (stepQuery === "double-blind") {
-            stepStatus = "Double-Blind";
-        }
-
-        if (stepQuery === "layouting") {
-            stepStatus = "Layouting";
-        }
-
-        if (stepQuery === "final-proofreading") {
-            stepStatus = "Final Proofreading";
-        }
-
-        const manuscripts = await Manuscript.find({ stepStatus }).populate({
+        const manuscripts = await Manuscript.find({ status }).populate({
             path: "editor",
             select: "firstname middlename lastname email position department profileLink"
         });
