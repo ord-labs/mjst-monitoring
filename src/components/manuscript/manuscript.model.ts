@@ -32,6 +32,8 @@ export interface ManuscriptDoc extends Document {
     rejectDate: Date;
     comments: string;
     status: "Pre-Review" | "Double-Blind" | "Layouting" | "Final Proofreading" | "Published" | "Rejected";
+    plagiarismScore: number;
+    grammarScore: number;
 }
 
 const ManuscriptSchema = new Schema<ManuscriptDoc>(
@@ -60,7 +62,9 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         rejectReason: { type: String, default: null },
         rejectDate: { type: Date, default: null },
         comments: { type: String, default: null },
-        status: { type: String, default: "Pre-Review" }
+        status: { type: String, default: "Pre-Review" },
+        plagiarismScore: { type: Number, default: 0 },
+        grammarScore: { type: Number, default: 0 }
     },
     {
         timestamps: {
