@@ -41,7 +41,7 @@ export const getManuscriptByStepStatus = async (req: Request, res: Response, nex
             stepStatus = "Final Proofreading";
         }
 
-        const manuscripts = await Manuscript.find({ stepStatus });
+        const manuscripts = await Manuscript.find({ stepStatus }).populate("editor");
 
         if (manuscripts) {
             return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
