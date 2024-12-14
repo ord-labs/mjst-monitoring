@@ -9,7 +9,9 @@ import Manuscript from "./manuscript.model";
  */
 const getManuscriptById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const manuscript = await Manuscript.findOne({ _id: req.query.manuscriptId });
+        const manuscript = await Manuscript.findOne({ _id: req.query.manuscriptId })
+            .populate(["editor", "reviewers"])
+            .exec();
 
         if (manuscript) {
             return jsonResponse(res, { status: 200, message: "Manuscript fetched successfully", data: manuscript });
@@ -57,7 +59,7 @@ export const getManuscriptByStepStatus = async (req: Request, res: Response, nex
 
 const getManuscripts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const manuscripts = await Manuscript.find();
+        const manuscripts = await Manuscript.find().populate(["editor", "reviewers"]).exec();
         if (manuscripts) {
             return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
         }
@@ -177,7 +179,7 @@ export const deleteManuscript = async (req: Request, res: Response, next: NextFu
 const countManuscriptStartingWith = async (scopeCode) => {
     try {
         const count = await Manuscript.countDocuments({
-            name: { $regex: `^${scopeCode}`, $options: "i" } // 'i' makes it case-insensitive
+            fileCode: { $regex: `^${scopeCode}`, $options: "i" } // 'i' makes it case-insensitive
         });
         return count;
     } catch (error) {
