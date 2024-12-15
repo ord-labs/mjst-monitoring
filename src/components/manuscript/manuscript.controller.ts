@@ -26,10 +26,13 @@ export const getManuscriptByStepStatus = async (req: Request, res: Response, nex
     try {
         const status = req.query.status;
 
-        const manuscripts = await Manuscript.find({ status }).populate({
-            path: "editor",
-            select: "firstname middlename lastname email position department profileLink"
-        });
+        const manuscripts = await Manuscript.find({ status })
+            .populate({
+                path: "editor",
+                select: "firstname middlename lastname email position department profileLink"
+            })
+            .populate(["editor", "reviewers"])
+            .exec();
 
         if (manuscripts) {
             return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
