@@ -3,15 +3,26 @@ import { errorResponse, jsonResponse } from "../../utils/apiResponse";
 import { deleteManuscriptSchema } from "../manuscript/manuscript.schema";
 import { extractErrorMessage } from "../../utils/extractJoiError";
 import Manuscript from "./manuscript.model";
+import Rating from "../rating/rating.model";
 
 /*
  * Extra Handlers
  */
 const getManuscriptById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const manuscript = await Manuscript.findOne({ _id: req.query.manuscriptId })
+        const manuscript = await Manuscript.findOne({ _id: req.query.manuscriptId }, null, { lean: true })
             .populate(["editor", "reviewers"])
+            .lean()
             .exec();
+
+        if (manuscript) {
+            const ratings = await Rating.find({ manuscriptId: manuscript._id })
+                .populate(["manuscriptId", "reviewerId"])
+                .exec();
+            (manuscript as any).ratings = ratings;
+        }
+
+        console.log("Manuscript", manuscript);
 
         if (manuscript) {
             return jsonResponse(res, { status: 200, message: "Manuscript fetched successfully", data: manuscript });
