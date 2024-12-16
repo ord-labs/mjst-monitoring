@@ -2,13 +2,25 @@ import { NextFunction, Request, Response } from "express";
 import { errorResponse, jsonResponse } from "../../utils/apiResponse";
 import { extractErrorMessage } from "../../utils/extractJoiError";
 import Rating from "./rating.model";
+import { generateQueryFilters } from "../../utils/queryHelper";
 
 /*
  * Extra Handlers
  */
-const getRatingById = async (req: Request, res: Response, next: NextFunction) => {
+const getRatingByField = async (req: Request, res: Response, next: NextFunction) => {
+    const ratingFilters = generateQueryFilters(
+        req.query,
+        ["ratingId", "manuscriptId", "reviewerId", "rating"],
+        (query) => {
+            if (query.ratingId) {
+                query._id = query.ratingId;
+                delete query.ratingId;
+            }
+        }
+    );
+
     try {
-        const rating = await Rating.findOne({ _id: req.query.ratingId });
+        const rating = await Rating.findOne(ratingFilters);
 
         if (rating) {
             return jsonResponse(res, { status: 200, message: "Rating fetched successfully", data: rating });
@@ -41,9 +53,8 @@ export const getRatings = async (req: Request, res: Response, next: NextFunction
  */
 
 export const getRating = async (req: Request, res: Response, next: NextFunction) => {
-    const { ratingId } = req.query;
-    if (ratingId) {
-        return getRatingById(req, res, next);
+    if (req.query) {
+        return getRatingByField(req, res, next);
     }
 
     return getRatings(req, res, next);
