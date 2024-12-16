@@ -16,15 +16,6 @@ const getManuscriptById = async (req: Request, res: Response, next: NextFunction
             .exec();
 
         if (manuscript) {
-            const ratings = await Rating.find({ manuscriptId: manuscript._id })
-                .populate(["manuscriptId", "reviewerId"])
-                .exec();
-            (manuscript as any).ratings = ratings;
-        }
-
-        console.log("Manuscript", manuscript);
-
-        if (manuscript) {
             return jsonResponse(res, { status: 200, message: "Manuscript fetched successfully", data: manuscript });
         }
         return next(errorResponse(400, "Manuscript not found"));
