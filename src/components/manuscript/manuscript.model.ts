@@ -40,6 +40,9 @@ export interface ManuscriptDoc extends Document {
     status: "Pre-Review" | "Double-Blind" | "Layouting" | "Final Proofreading" | "Published" | "Rejected";
     plagiarismScore: number;
     grammarScore: number;
+    issueNumber: string;
+    issueName: string;
+    volumeName: string;
 }
 
 const ManuscriptSchema = new Schema<ManuscriptDoc>(
@@ -75,7 +78,10 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         comments: { type: String, default: null },
         status: { type: String, default: "Pre-Review" },
         plagiarismScore: { type: Number, default: 0 },
-        grammarScore: { type: Number, default: 0 }
+        grammarScore: { type: Number, default: 0 },
+        issueNumber: { type: String, default: null },
+        issueName: { type: String, default: null },
+        volumeName: { type: String, default: null }
     },
     {
         timestamps: {
