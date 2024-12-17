@@ -3,7 +3,6 @@ import { errorResponse, jsonResponse } from "../../utils/apiResponse";
 import { deleteManuscriptSchema } from "../manuscript/manuscript.schema";
 import { extractErrorMessage } from "../../utils/extractJoiError";
 import Manuscript from "./manuscript.model";
-import Rating from "../rating/rating.model";
 
 /*
  * Extra Handlers
