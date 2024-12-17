@@ -22,7 +22,8 @@ export interface ManuscriptDoc extends Document {
     reviewers: Types.ObjectId[];
     layoutArtistName: string;
     layoutArtistEmail: string;
-    layoutStatus: "In Progress" | "For Revision" | "Published" | "Rejected";
+    layoutStatus: "In Progress" | "For Revision" | "Completed";
+    layoutFinishDate: Date;
     dateAccepted: Date;
     proofReaderName: string;
     proofReaderEmail: string;
@@ -57,7 +58,8 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         reviewers: [{ type: Schema.Types.ObjectId, ref: "Reviewer" }],
         layoutArtistName: { type: String, default: null },
         layoutArtistEmail: { type: String, default: null },
-        layoutStatus: { type: String, enum: STATUS, required: true, default: "In Progress" },
+        layoutStatus: { type: String, required: true, default: "In Progress" },
+        layoutFinishDate: { type: Date, default: null },
         dateAccepted: { type: Date, default: null },
         proofReaderName: { type: String, default: null },
         proofReaderEmail: { type: String, default: null },
