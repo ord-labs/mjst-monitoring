@@ -1,9 +1,10 @@
 import { Schema, model, Document, Types } from "mongoose";
 
-export enum ManuscriptStatus {
-    IN_PROGRESS = "in progress",
-    FOR_REVISION = "for revision",
-    PUBLISHED = "published"
+export enum STATUS {
+    IN_PROGRESS = "In Progress",
+    FOR_REVISION = "For Revision",
+    PUBLISHED = "Published",
+    REJECTED = "Rejected"
 }
 
 export interface ManuscriptDoc extends Document {
@@ -21,6 +22,7 @@ export interface ManuscriptDoc extends Document {
     reviewers: Types.ObjectId[];
     layoutArtistName: string;
     layoutArtistEmail: string;
+    layoutStatus: "In Progress" | "For Revision" | "Published" | "Rejected";
     dateAccepted: Date;
     proofReaderName: string;
     proofReaderEmail: string;
@@ -51,10 +53,11 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         authorEmail: { type: String, required: true },
         editor: { type: Schema.Types.ObjectId, ref: "Editor" },
         affiliation: { type: String, required: true },
-        progressStatus: { type: String, enum: ManuscriptStatus, required: true, default: "In Progress" },
+        progressStatus: { type: String, enum: STATUS, required: true, default: "In Progress" },
         reviewers: [{ type: Schema.Types.ObjectId, ref: "Reviewer" }],
         layoutArtistName: { type: String, default: null },
         layoutArtistEmail: { type: String, default: null },
+        layoutStatus: { type: String, enum: STATUS, required: true, default: "In Progress" },
         dateAccepted: { type: Date, default: null },
         proofReaderName: { type: String, default: null },
         proofReaderEmail: { type: String, default: null },
