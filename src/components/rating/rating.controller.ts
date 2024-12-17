@@ -69,6 +69,7 @@ export const createRating = async (req: Request, res: Response, next: NextFuncti
     try {
         let { manuscriptId, reviewerId, remarks } = req.body;
         let rating: any = {};
+        let status: number = 200;
 
         const existingRating = await Rating.findOne({ manuscriptId, reviewerId });
 
@@ -76,11 +77,12 @@ export const createRating = async (req: Request, res: Response, next: NextFuncti
             rating = await Rating.findOneAndUpdate({ _id: existingRating._id }, req.body, { new: true });
         } else {
             rating = await Rating.create(req.body);
+            status = 201;
         }
 
         if (rating) {
             return jsonResponse(res, {
-                status: 201,
+                status,
                 message: "Rating created successfully",
                 data: {
                     rating
