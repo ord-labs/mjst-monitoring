@@ -29,7 +29,10 @@ export interface ManuscriptDoc extends Document {
     volumeYear: string;
     datePublished: Date;
     rejectReason: string;
+    rejectComment: string;
     rejectDate: Date;
+    revisionComment: string;
+    revisionDate: Date;
     comments: string;
     status: "Pre-Review" | "Double-Blind" | "Layouting" | "Final Proofreading" | "Published" | "Rejected";
     plagiarismScore: number;
@@ -60,7 +63,10 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         volumeYear: { type: String, default: null },
         datePublished: { type: Date, default: null },
         rejectReason: { type: String, default: null },
+        rejectComment: { type: String, default: null },
         rejectDate: { type: Date, default: null },
+        revisionComment: { type: String, default: null },
+        revisionDate: { type: Date, default: null },
         comments: { type: String, default: null },
         status: { type: String, default: "Pre-Review" },
         plagiarismScore: { type: Number, default: 0 },
