@@ -16,15 +16,19 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
         const reviewersCount: number = await Reviewer.countDocuments();
         const editorsCount: number = await Editor.countDocuments();
 
+        const statusDistributionCount: number = preReviewCount + doubleBlindCount + acceptedCount;
+        const typeDistributionCount: number = uploadCount + publishedCount + rejectedCount;
+
         const statusDistribution = {
-            preReview: (preReviewCount / totalManuscripts) * 100,
-            doubleBlind: (doubleBlindCount / totalManuscripts) * 100,
-            accepted: (acceptedCount / totalManuscripts) * 100
+            preReview: (preReviewCount / statusDistributionCount) * 100,
+            doubleBlind: (doubleBlindCount / statusDistributionCount) * 100,
+            accepted: (acceptedCount / statusDistributionCount) * 100
         };
 
         const typeDistribution = {
-            published: (publishedCount / totalManuscripts) * 100,
-            rejected: (rejectedCount / totalManuscripts) * 100
+            upload: (uploadCount / typeDistributionCount) * 100,
+            published: (publishedCount / typeDistributionCount) * 100,
+            rejected: (rejectedCount / typeDistributionCount) * 100
         };
 
         const year = new Date().getFullYear();
