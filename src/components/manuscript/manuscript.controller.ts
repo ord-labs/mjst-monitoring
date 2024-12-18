@@ -23,11 +23,39 @@ const getManuscriptById = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+const getManuscriptByStatusYearFilter = (status: string | undefined, year?: number) => {
+    if (status && year) {
+        return {
+            status,
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        };
+    }
+
+    if (year && !status) {
+        return {
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        };
+    }
+
+    return {
+        status
+    };
+};
+
 export const getManuscriptByStepStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const status = req.query.status;
+        const status: string | undefined = req.query.status as string;
+        const year = Number(req.query.year);
 
-        const manuscripts = await Manuscript.find({ status })
+        const filter = getManuscriptByStatusYearFilter(status, year);
+
+        const manuscripts = await Manuscript.find(filter)
             .populate({
                 path: "editor",
                 select: "firstname middlename lastname email position department profileLink"
