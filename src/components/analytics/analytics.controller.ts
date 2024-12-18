@@ -6,34 +6,79 @@ import Editor from "../editor/editor.model";
 
 export const getAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const totalManuscripts: number = await Manuscript.countDocuments();
-        const preReviewCount: number = await Manuscript.countDocuments({ status: "Pre-Review" });
-        const doubleBlindCount: number = await Manuscript.countDocuments({ status: "Double-Blind" });
-        const acceptedCount: number = await Manuscript.countDocuments({ status: ["Layouting", "Final Proofreading"] });
-        const publishedCount: number = await Manuscript.countDocuments({ status: "Published" });
-        const rejectedCount: number = await Manuscript.countDocuments({ status: "Rejected" });
-        const uploadCount: number = totalManuscripts;
-        const reviewersCount: number = await Reviewer.countDocuments();
-        const editorsCount: number = await Editor.countDocuments();
-
-        const statusDistributionCount: number = preReviewCount + doubleBlindCount + acceptedCount;
-        const typeDistributionCount: number = uploadCount + publishedCount + rejectedCount;
-
-        const statusDistribution = {
-            preReviewCount: (preReviewCount / statusDistributionCount) * 100,
-            doubleBlindCount: (doubleBlindCount / statusDistributionCount) * 100,
-            acceptedCount: (acceptedCount / statusDistributionCount) * 100,
-            statusDistributionCount
-        };
-
-        const typeDistribution = {
-            uploadCount: (uploadCount / typeDistributionCount) * 100,
-            publishedCount: (publishedCount / typeDistributionCount) * 100,
-            rejectedCount: (rejectedCount / typeDistributionCount) * 100,
-            typeDistributionCount
-        };
-
         const year = req.query.year ? Number(req.query.year) : new Date().getFullYear();
+
+        const totalManuscripts: number = await Manuscript.countDocuments({
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+        const preReviewCount: number = await Manuscript.countDocuments({
+            status: "Pre-Review",
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+        const doubleBlindCount: number = await Manuscript.countDocuments({
+            status: "Double-Blind",
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+        const acceptedCount: number = await Manuscript.countDocuments({
+            status: ["Layouting", "Final Proofreading"],
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+        const publishedCount: number = await Manuscript.countDocuments({
+            status: "Published",
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+        const rejectedCount: number = await Manuscript.countDocuments({
+            status: "Rejected",
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+        const uploadCount: number = totalManuscripts;
+        const reviewersCount: number = await Reviewer.countDocuments({
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+        const editorsCount: number = await Editor.countDocuments({
+            created_at: {
+                $gte: new Date(`${year}-01-01`),
+                $lt: new Date(`${year + 1}-01-01`)
+            }
+        });
+
+        // const statusDistributionCount: number = preReviewCount + doubleBlindCount + acceptedCount;
+        // const typeDistributionCount: number = uploadCount + publishedCount + rejectedCount;
+
+        // const statusDistribution = {
+        //     preReviewCount: (preReviewCount / statusDistributionCount) * 100,
+        //     doubleBlindCount: (doubleBlindCount / statusDistributionCount) * 100,
+        //     acceptedCount: (acceptedCount / statusDistributionCount) * 100,
+        //     statusDistributionCount
+        // };
+
+        // const typeDistribution = {
+        //     uploadCount: (uploadCount / typeDistributionCount) * 100,
+        //     publishedCount: (publishedCount / typeDistributionCount) * 100,
+        //     rejectedCount: (rejectedCount / typeDistributionCount) * 100,
+        //     typeDistributionCount
+        // };
 
         const result = await Manuscript.aggregate([
             {
@@ -72,8 +117,6 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
                 uploadCount,
                 reviewersCount,
                 editorsCount,
-                statusDistribution,
-                typeDistribution,
                 countsByMonth,
                 totalManuscripts
             }
