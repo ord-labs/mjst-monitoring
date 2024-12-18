@@ -19,7 +19,10 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
         const statusDistribution = {
             preReview: (preReview / totalManuscripts) * 100,
             doubleBlind: (doubleBlind / totalManuscripts) * 100,
-            accepted: (accepted / totalManuscripts) * 100,
+            accepted: (accepted / totalManuscripts) * 100
+        };
+
+        const typeDistribution = {
             published: (published / totalManuscripts) * 100,
             rejected: (rejected / totalManuscripts) * 100
         };
@@ -65,6 +68,7 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
                 editors,
                 statusDistribution,
                 countsByMonth,
+                typeDistribution,
                 totalManuscripts
             }
         });
