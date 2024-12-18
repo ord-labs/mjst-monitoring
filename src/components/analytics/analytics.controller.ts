@@ -73,8 +73,8 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
                 reviewersCount,
                 editorsCount,
                 statusDistribution,
-                countsByMonth,
                 typeDistribution,
+                countsByMonth,
                 totalManuscripts
             }
         });
