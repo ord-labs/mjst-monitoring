@@ -20,15 +20,17 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
         const typeDistributionCount: number = uploadCount + publishedCount + rejectedCount;
 
         const statusDistribution = {
-            preReview: (preReviewCount / statusDistributionCount) * 100,
-            doubleBlind: (doubleBlindCount / statusDistributionCount) * 100,
-            accepted: (acceptedCount / statusDistributionCount) * 100
+            preReviewCount: (preReviewCount / statusDistributionCount) * 100,
+            doubleBlindCount: (doubleBlindCount / statusDistributionCount) * 100,
+            acceptedCount: (acceptedCount / statusDistributionCount) * 100,
+            statusDistributionCount
         };
 
         const typeDistribution = {
-            upload: (uploadCount / typeDistributionCount) * 100,
-            published: (publishedCount / typeDistributionCount) * 100,
-            rejected: (rejectedCount / typeDistributionCount) * 100
+            uploadCount: (uploadCount / typeDistributionCount) * 100,
+            publishedCount: (publishedCount / typeDistributionCount) * 100,
+            rejectedCount: (rejectedCount / typeDistributionCount) * 100,
+            typeDistributionCount
         };
 
         const year = new Date().getFullYear();
