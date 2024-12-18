@@ -57,7 +57,7 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
 
         const countsByMonth = Array.from({ length: 12 }, (_, i) => {
             const monthData = result.find((r) => r._id.month === i + 1);
-            return { month: i + 1, count: monthData ? monthData.count : 0 };
+            return monthData ? monthData.count : 0;
         });
 
         return jsonResponse(res, {
