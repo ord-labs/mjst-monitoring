@@ -7,24 +7,24 @@ import Editor from "../editor/editor.model";
 export const getAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const totalManuscripts: number = await Manuscript.countDocuments();
-        const preReview: number = await Manuscript.countDocuments({ status: "Pre-Review" });
-        const doubleBlind: number = await Manuscript.countDocuments({ status: "Double-Blind" });
-        const accepted: number = await Manuscript.countDocuments({ status: ["Layouting", "Final Proofreading"] });
-        const published: number = await Manuscript.countDocuments({ status: "Published" });
-        const rejected: number = await Manuscript.countDocuments({ status: "Rejected" });
-        const upload: number = totalManuscripts;
-        const reviewers: number = await Reviewer.countDocuments();
-        const editors: number = await Editor.countDocuments();
+        const preReviewCount: number = await Manuscript.countDocuments({ status: "Pre-Review" });
+        const doubleBlindCount: number = await Manuscript.countDocuments({ status: "Double-Blind" });
+        const acceptedCount: number = await Manuscript.countDocuments({ status: ["Layouting", "Final Proofreading"] });
+        const publishedCount: number = await Manuscript.countDocuments({ status: "Published" });
+        const rejectedCount: number = await Manuscript.countDocuments({ status: "Rejected" });
+        const uploadCount: number = totalManuscripts;
+        const reviewersCount: number = await Reviewer.countDocuments();
+        const editorsCount: number = await Editor.countDocuments();
 
         const statusDistribution = {
-            preReview: (preReview / totalManuscripts) * 100,
-            doubleBlind: (doubleBlind / totalManuscripts) * 100,
-            accepted: (accepted / totalManuscripts) * 100
+            preReview: (preReviewCount / totalManuscripts) * 100,
+            doubleBlind: (doubleBlindCount / totalManuscripts) * 100,
+            accepted: (acceptedCount / totalManuscripts) * 100
         };
 
         const typeDistribution = {
-            published: (published / totalManuscripts) * 100,
-            rejected: (rejected / totalManuscripts) * 100
+            published: (publishedCount / totalManuscripts) * 100,
+            rejected: (rejectedCount / totalManuscripts) * 100
         };
 
         const year = new Date().getFullYear();
@@ -58,14 +58,14 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
             status: 200,
             message: "Analytics fetched successfully",
             data: {
-                preReview,
-                doubleBlind,
-                accepted,
-                published,
-                rejected,
-                upload,
-                reviewers,
-                editors,
+                preReviewCount,
+                doubleBlindCount,
+                acceptedCount,
+                publishedCount,
+                rejectedCount,
+                uploadCount,
+                reviewersCount,
+                editorsCount,
                 statusDistribution,
                 countsByMonth,
                 typeDistribution,
