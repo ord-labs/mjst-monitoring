@@ -33,7 +33,7 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
             typeDistributionCount
         };
 
-        const year = new Date().getFullYear();
+        const year = req.query.year ? Number(req.query.year) : new Date().getFullYear();
 
         const result = await Manuscript.aggregate([
             {
