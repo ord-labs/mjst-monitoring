@@ -4,62 +4,78 @@ import Manuscript from "../manuscript/manuscript.model";
 import Reviewer from "../reviewer/reviewer.model";
 import Editor from "../editor/editor.model";
 
+const getMonthYearFilter = (year, month) => {
+    if (year && month) {
+        if (month === 12) {
+            return { gte: new Date(`${year}-${month}-01`), lt: new Date(`${year + 1}-${1}-01`) };
+        }
+        return { gte: new Date(`${year}-${month}-01`), lt: new Date(`${year}-${month + 1}-01`) };
+    }
+    return {
+        gte: new Date(`${year}-01-01`),
+        lt: new Date(`${year + 1}-01-01`)
+    };
+};
+
 export const getAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const year = req.query.year ? Number(req.query.year) : new Date().getFullYear();
+        const month = req.query.month ? Number(req.query.month) : null;
+
+        const { gte, lt } = getMonthYearFilter(year, month);
 
         const totalManuscripts: number = await Manuscript.countDocuments({
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
         const preReviewCount: number = await Manuscript.countDocuments({
             status: "Pre-Review",
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
         const doubleBlindCount: number = await Manuscript.countDocuments({
             status: "Double-Blind",
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
         const acceptedCount: number = await Manuscript.countDocuments({
             status: ["Layouting", "Final Proofreading"],
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
         const publishedCount: number = await Manuscript.countDocuments({
             status: "Published",
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
         const rejectedCount: number = await Manuscript.countDocuments({
             status: "Rejected",
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
         const uploadCount: number = totalManuscripts;
         const reviewersCount: number = await Reviewer.countDocuments({
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
         const editorsCount: number = await Editor.countDocuments({
             created_at: {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: gte,
+                $lt: lt
             }
         });
 
