@@ -111,8 +111,8 @@ export const createManuscript = async (req: Request, res: Response, next: NextFu
     try {
         let newManuscript = req.body;
 
-        const docCount = (await countManuscriptStartingWith(newManuscript.scopeCode)) + 1;
-        const fileCodeNumber = formatFileCodeNumber(docCount);
+        // const docCount = (await countManuscriptStartingWith(newManuscript.scopeCode)) + 1;
+        const fileCodeNumber = await countManuscriptStartingWith(newManuscript.scopeCode);
 
         newManuscript.fileCode = `${newManuscript.scopeCode}${fileCodeNumber}`;
 
@@ -191,12 +191,24 @@ export const deleteManuscript = async (req: Request, res: Response, next: NextFu
     }
 };
 
+const baseCount = {
+    EA: 1087,
+    IA: 905,
+    ECBE: 1285,
+    ICBE: 942,
+    EECT: 1458,
+    IECT: 1009,
+    EMSP: 977,
+    IMSP: 914,
+    ORS: 1160
+};
+
 const countManuscriptStartingWith = async (scopeCode) => {
     try {
         const count = await Manuscript.countDocuments({
             fileCode: { $regex: `^${scopeCode}`, $options: "i" } // 'i' makes it case-insensitive
         });
-        return count;
+        return count + baseCount[scopeCode];
     } catch (error) {
         return 0;
     }
