@@ -114,6 +114,8 @@ export const createManuscript = async (req: Request, res: Response, next: NextFu
         // const docCount = (await countManuscriptStartingWith(newManuscript.scopeCode)) + 1;
         const fileCodeNumber = await countManuscriptStartingWith(newManuscript.scopeCode);
 
+        console.log(fileCodeNumber);
+
         newManuscript.fileCode = `${newManuscript.scopeCode}${fileCodeNumber}`;
 
         const manuscript = await Manuscript.create(newManuscript);
