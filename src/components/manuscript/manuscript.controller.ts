@@ -119,6 +119,8 @@ export const createManuscript = async (req: Request, res: Response, next: NextFu
         // newManuscript.fileCode = `${newManuscript.scopeCode}${fileCodeNumber}`;
         newManuscript.fileCode = `${newManuscript.scopeCode}`;
 
+        console.log(newManuscript.scopeCode);
+
         const manuscript = await Manuscript.create(newManuscript);
 
         if (manuscript) {
