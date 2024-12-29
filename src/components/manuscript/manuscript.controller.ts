@@ -111,15 +111,9 @@ export const createManuscript = async (req: Request, res: Response, next: NextFu
     try {
         let newManuscript = req.body;
 
-        // const docCount = (await countManuscriptStartingWith(newManuscript.scopeCode)) + 1;
-        const fileCodeNumber = await countManuscriptStartingWith(newManuscript.scopeCode);
+        const fileCodeNumber = await generateFileCodeNumber(newManuscript.scopeCode);
 
-        console.log(fileCodeNumber);
-
-        // newManuscript.fileCode = `${newManuscript.scopeCode}${fileCodeNumber}`;
-        newManuscript.fileCode = `${newManuscript.scopeCode}`;
-
-        console.log(newManuscript.scopeCode);
+        newManuscript.fileCode = `${newManuscript.scopeCode}${fileCodeNumber}`;
 
         const manuscript = await Manuscript.create(newManuscript);
 
@@ -208,26 +202,15 @@ const baseCount = {
     ORS: 1160
 };
 
-const countManuscriptStartingWith = async (scopeCode) => {
+const generateFileCodeNumber = async (scopeCode) => {
     try {
         const count = await Manuscript.countDocuments({
             fileCode: { $regex: `^${scopeCode}`, $options: "i" } // 'i' makes it case-insensitive
         });
+
+        console.log(count);
         return count + baseCount[scopeCode];
     } catch (error) {
         return 0;
-    }
-};
-
-const formatFileCodeNumber = (count) => {
-    switch (count.toString().length) {
-        case 1:
-            return `000${count}`;
-        case 2:
-            return `00${count}`;
-        case 3:
-            return `0${count}`;
-        default:
-            return count.toString();
     }
 };
