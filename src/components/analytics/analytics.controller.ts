@@ -66,18 +66,8 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
             }
         });
         const uploadCount: number = totalManuscripts;
-        const reviewersCount: number = await Reviewer.countDocuments({
-            created_at: {
-                $gte: gte,
-                $lt: lt
-            }
-        });
-        const editorsCount: number = await Editor.countDocuments({
-            created_at: {
-                $gte: gte,
-                $lt: lt
-            }
-        });
+        const reviewersCount: number = await Reviewer.countDocuments();
+        const editorsCount: number = await Editor.countDocuments();
 
         // const statusDistributionCount: number = preReviewCount + doubleBlindCount + acceptedCount;
         // const typeDistributionCount: number = uploadCount + publishedCount + rejectedCount;
