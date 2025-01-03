@@ -209,7 +209,7 @@ const generateFileCodeNumber = async (scopeCode) => {
         });
 
         console.log(count);
-        return count + baseCount[scopeCode];
+        return count + baseCount[scopeCode] + 1;
     } catch (error) {
         return 0;
     }
