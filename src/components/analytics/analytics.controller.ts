@@ -25,42 +25,42 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
         const { gte, lt } = getMonthYearFilter(year, month);
 
         const totalManuscripts: number = await Manuscript.countDocuments({
-            created_at: {
+            dateSubmitted: {
                 $gte: gte,
                 $lt: lt
             }
         });
         const preReviewCount: number = await Manuscript.countDocuments({
             status: "Pre-Review",
-            created_at: {
+            dateSubmitted: {
                 $gte: gte,
                 $lt: lt
             }
         });
         const doubleBlindCount: number = await Manuscript.countDocuments({
             status: "Double-Blind",
-            created_at: {
+            dateSubmitted: {
                 $gte: gte,
                 $lt: lt
             }
         });
         const acceptedCount: number = await Manuscript.countDocuments({
             status: ["Layouting", "Final Proofreading"],
-            created_at: {
+            dateSubmitted: {
                 $gte: gte,
                 $lt: lt
             }
         });
         const publishedCount: number = await Manuscript.countDocuments({
             status: "Published",
-            created_at: {
+            dateSubmitted: {
                 $gte: gte,
                 $lt: lt
             }
         });
         const rejectedCount: number = await Manuscript.countDocuments({
             status: "Rejected",
-            created_at: {
+            dateSubmitted: {
                 $gte: gte,
                 $lt: lt
             }
@@ -89,7 +89,7 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
         const result = await Manuscript.aggregate([
             {
                 $match: {
-                    created_at: {
+                    dateSubmitted: {
                         $gte: new Date(`${year}-01-01`),
                         $lt: new Date(`${year + 1}-01-01`)
                     }
@@ -97,7 +97,7 @@ export const getAnalytics = async (req: Request, res: Response, next: NextFuncti
             },
             {
                 $group: {
-                    _id: { month: { $month: "$created_at" } },
+                    _id: { month: { $month: "$dateSubmitted" } },
                     count: { $sum: 1 }
                 }
             },
