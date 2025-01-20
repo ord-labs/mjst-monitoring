@@ -43,6 +43,7 @@ export interface ManuscriptDoc extends Document {
     issueNumber: string;
     issueName: string;
     volumeName: string;
+    fileUrl: string;
 }
 
 const ManuscriptSchema = new Schema<ManuscriptDoc>(
@@ -81,7 +82,8 @@ const ManuscriptSchema = new Schema<ManuscriptDoc>(
         grammarScore: { type: Number, default: 0 },
         issueNumber: { type: String, default: null },
         issueName: { type: String, default: null },
-        volumeName: { type: String, default: null }
+        volumeName: { type: String, default: null },
+        fileUrl: { type: String }
     },
     {
         timestamps: {
