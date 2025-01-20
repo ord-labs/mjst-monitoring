@@ -8,7 +8,7 @@ import mailRouter from "./mail/mail.route";
 import manuscriptRouter from "./manuscript/manuscript.route";
 import ratingRouter from "./rating/rating.route";
 import analyticsRouter from "./analytics/analytics.route";
-
+import imagekitRouter from "./imagekit/imagekit.route";
 const router = Router();
 
 router.get<ApiResponse>("/", (req, res) => {
@@ -25,5 +25,6 @@ router.use("/mail", mailRouter);
 router.use("/manuscript", manuscriptRouter);
 router.use("/rating", ratingRouter);
 router.use("/analytics", analyticsRouter);
+router.use("/imagekit", imagekitRouter);
 
 export default router;
