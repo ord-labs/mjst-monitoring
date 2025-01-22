@@ -48,6 +48,52 @@ const getManuscriptByStatusYearFilter = (status: string | undefined, year?: numb
     };
 };
 
+export const getManuscriptByEditor = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const editor: string | undefined = req.body.editor as string;
+
+        const filter = { editor };
+
+        const manuscripts = await Manuscript.find(filter)
+            .populate({
+                path: "editor",
+                select: "firstname middlename lastname email position department profileLink"
+            })
+            .populate(["editor", "reviewers"])
+            .exec();
+
+        if (manuscripts) {
+            return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
+        }
+        return next(errorResponse(400, "Manuscripts not found"));
+    } catch (e) {
+        return next(errorResponse(400, (e as Error).message));
+    }
+};
+
+export const getManuscriptByReviewer = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const reviewer: string | undefined = req.body.reviewer as string;
+
+        const filter = { reviewer: { $in: [reviewer] } };
+
+        const manuscripts = await Manuscript.find(filter)
+            .populate({
+                path: "editor",
+                select: "firstname middlename lastname email position department profileLink"
+            })
+            .populate(["editor", "reviewers"])
+            .exec();
+
+        if (manuscripts) {
+            return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
+        }
+        return next(errorResponse(400, "Manuscripts not found"));
+    } catch (e) {
+        return next(errorResponse(400, (e as Error).message));
+    }
+};
+
 export const getManuscriptByStepStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const status: string | undefined = req.query.status as string;

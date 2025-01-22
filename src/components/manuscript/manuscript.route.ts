@@ -4,13 +4,18 @@ import {
     getManuscript,
     createManuscript,
     updateManuscript,
-    getManuscriptByStepStatus
+    getManuscriptByStepStatus,
+    getManuscriptByReviewer,
+    getManuscriptByEditor
 } from "./manuscript.controller";
 import { authenticated } from "../../config/passport.jwt.config";
 
 const router = express.Router();
 
 router.get("/", authenticated, getManuscript);
+router.get("/step", authenticated, getManuscriptByStepStatus);
+router.post("/by-reviewer", authenticated, getManuscriptByReviewer);
+router.post("/by-editor", authenticated, getManuscriptByEditor);
 router.get("/step", authenticated, getManuscriptByStepStatus);
 router.post("/", authenticated, createManuscript);
 router.put("/:manuscriptId", authenticated, updateManuscript);
