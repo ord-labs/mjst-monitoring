@@ -3,7 +3,9 @@ import bcrypt from "bcrypt";
 
 export enum UserRole {
     DIRECTOR,
-    STAFF
+    STAFF,
+    REVIEWER,
+    EDITOR
 }
 
 export interface UserDoc extends Document {
