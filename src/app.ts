@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
@@ -10,8 +10,6 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import jwtPassportMiddleware from "./config/passport.jwt.config";
 import { googleOAuth, googleOAuthDeveloper } from "./config/passport.google.config";
-import jwtPassportEditorMiddleware from "./config/passport.jwt.editor.config";
-import jwtPassportReviewerMiddleware from "./config/passport.jwt.reviewer.config";
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,8 +25,6 @@ app.use(express.json());
 //Passport
 app.use(passport.initialize());
 passport.use(jwtPassportMiddleware);
-passport.use(jwtPassportEditorMiddleware);
-passport.use(jwtPassportReviewerMiddleware);
 passport.use("google", googleOAuth);
 passport.use("google-seller", googleOAuthDeveloper);
 
