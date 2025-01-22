@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { errorResponse, jsonResponse } from "../../utils/apiResponse";
-import { createReviewerSchema, deleteReviewerSchema, updateReviewerSchema } from "../reviewer/reviewer.schema";
+import { createReviewerSchema, deleteReviewerSchema } from "../reviewer/reviewer.schema";
 import { extractErrorMessage } from "../../utils/extractJoiError";
 import Reviewer from "./reviewer.model";
 import { generateToken } from "../../utils/jwtHelper";
@@ -122,15 +122,6 @@ export const loginReviewerByCredentials = async (req: Request, res: Response, ne
  * @params updateReviewerSchema
  */
 export const updateReviewer = async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = updateReviewerSchema.validate(
-        { ...req.body, reviewerId: req.params.reviewerId },
-        { abortEarly: false }
-    );
-    if (error) {
-        const errorMessages: string[] = extractErrorMessage(error);
-        return next(errorResponse(400, "Invalid parameters", errorMessages));
-    }
-
     try {
         const id: string = req.params.reviewerId;
 

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { errorResponse, jsonResponse } from "../../utils/apiResponse";
-import { createEditorSchema, deleteEditorSchema, updateEditorSchema } from "../editor/editor.schema";
+import { createEditorSchema, deleteEditorSchema } from "../editor/editor.schema";
 import { extractErrorMessage } from "../../utils/extractJoiError";
 import Editor from "./editor.model";
 import { generateToken } from "../../utils/jwtHelper";
@@ -122,15 +122,6 @@ export const loginEditorByCredentials = async (req: Request, res: Response, next
  * @params updateEditorSchema
  */
 export const updateEditor = async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = updateEditorSchema.validate(
-        { ...req.body, editorId: req.params.editorId },
-        { abortEarly: false }
-    );
-    if (error) {
-        const errorMessages: string[] = extractErrorMessage(error);
-        return next(errorResponse(400, "Invalid parameters", errorMessages));
-    }
-
     try {
         const id: string = req.params.editorId;
 
