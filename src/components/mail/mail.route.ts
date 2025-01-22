@@ -4,6 +4,6 @@ import { sendMail } from "./mail.controller";
 
 const router = express.Router();
 
-router.post("/", authenticated, sendMail);
+router.post("/", sendMail);
 
 export default router;

@@ -4,10 +4,10 @@ import { authenticated } from "../../config/passport.jwt.config";
 
 const router = express.Router();
 
-router.get("/", authenticated, getEditor);
-router.post("/", authenticated, createEditor);
+router.get("/", getEditor);
+router.post("/", createEditor);
 router.post("/login", loginEditorByCredentials);
-router.put("/:editorId", authenticated, updateEditor);
-router.delete("/:editorId", authenticated, deleteEditor);
+router.put("/:editorId", updateEditor);
+router.delete("/:editorId", deleteEditor);
 
 export default router;

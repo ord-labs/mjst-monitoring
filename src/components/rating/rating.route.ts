@@ -4,9 +4,9 @@ import { authenticated } from "../../config/passport.jwt.config";
 
 const router = express.Router();
 
-router.get("/", authenticated, getRating);
-router.post("/", authenticated, createRating);
-router.put("/:ratingId", authenticated, updateRating);
-router.delete("/:ratingId", authenticated, deleteRating);
+router.get("/", getRating);
+router.post("/", createRating);
+router.put("/:ratingId", updateRating);
+router.delete("/:ratingId", deleteRating);
 
 export default router;
