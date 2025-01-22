@@ -3,6 +3,8 @@ import { errorResponse, jsonResponse } from "../../utils/apiResponse";
 import { createEditorSchema, deleteEditorSchema, updateEditorSchema } from "../editor/editor.schema";
 import { extractErrorMessage } from "../../utils/extractJoiError";
 import Editor from "./editor.model";
+import { generateToken } from "../../utils/jwtHelper";
+import { loginUserByCredentialsSchema } from "../user/user.schema";
 
 /*
  * Extra Handlers
@@ -64,19 +66,51 @@ export const createEditor = async (req: Request, res: Response, next: NextFuncti
     }
 
     try {
-        let newEditor = req.body;
+        // Check if email already exist
+        const editorExists = await Editor.findOne({ email: req.body.email });
+        if (editorExists) {
+            return next(errorResponse(400, "Email already taken by another editor"));
+        }
 
-        const editor = await Editor.create(newEditor);
+        const newEditor = await Editor.create(req.body);
 
-        if (editor) {
+        if (newEditor) {
+            const token: string = generateToken({ _id: newEditor._id });
             return jsonResponse(res, {
                 status: 201,
                 message: "Editor created successfully",
                 data: {
-                    editor
+                    newEditor,
+                    token
                 }
             });
         }
+    } catch (e) {
+        return next(errorResponse(400, (e as Error).message));
+    }
+};
+
+export const loginEditorByCredentials = async (req: Request, res: Response, next: NextFunction) => {
+    const { error } = loginUserByCredentialsSchema.validate(req.body, { abortEarly: false });
+    if (error) {
+        const errorMessages: string[] = extractErrorMessage(error);
+        return next(errorResponse(400, "Invalid parameters", errorMessages));
+    }
+
+    try {
+        const editor = await Editor.findOne({ email: req.body.email });
+        if (editor) {
+            const validPassword = await editor.isValidPassword(req.body.password);
+
+            if (validPassword) {
+                const token: string = generateToken({ _id: editor._id });
+                return jsonResponse(res, { status: 200, message: "Login successful", data: { token, editor } });
+            }
+
+            return next(errorResponse(401, "Invalid email or password"));
+        }
+
+        return next(errorResponse(401, "Invalid email or password"));
     } catch (e) {
         return next(errorResponse(400, (e as Error).message));
     }

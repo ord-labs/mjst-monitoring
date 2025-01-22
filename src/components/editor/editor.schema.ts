@@ -7,6 +7,7 @@ export const createEditorSchema = Joi.object({
     email: Joi.string().trim().required().label("Email"),
     position: Joi.string().trim().required().label("Position"),
     department: Joi.string().trim().required().label("Department"),
+    password: Joi.string().trim().required().label("Password"),
     profileLink: Joi.string().trim().optional().allow(null, "").label("Profile Link")
 });
 
@@ -22,6 +23,7 @@ export const updateEditorSchema = Joi.object({
     email: Joi.string().trim().required().label("Email"),
     position: Joi.string().trim().required().label("Position"),
     department: Joi.string().trim().required().label("Department"),
+    password: Joi.string().trim().required().label("Password"),
     profileLink: Joi.string().trim().label("Profile Link")
 });
 

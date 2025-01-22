@@ -7,7 +7,8 @@ export const createReviewerSchema = Joi.object({
     email: Joi.string().trim().required().label("Email"),
     affiliation: Joi.string().trim().required().label("Affiliation"),
     fieldOfExpertise: Joi.string().trim().required().label("Field of Expertise"),
-    publicationLink: Joi.string().trim().required().label("Publication Link")
+    publicationLink: Joi.string().trim().required().label("Publication Link"),
+    password: Joi.string().trim().required().label("Password")
 });
 
 export const getReviewerByIdSchema = Joi.object({
@@ -22,7 +23,8 @@ export const updateReviewerSchema = Joi.object({
     email: Joi.string().trim().label("Email"),
     affiliation: Joi.string().trim().label("Affiliation"),
     fieldOfExpertise: Joi.string().trim().label("Field of Expertise"),
-    publicationLink: Joi.string().trim().label("Publication Link")
+    publicationLink: Joi.string().trim().label("Publication Link"),
+    password: Joi.string().trim().label("Password")
 });
 
 export const deleteReviewerSchema = Joi.object({
