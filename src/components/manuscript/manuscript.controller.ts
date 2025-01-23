@@ -52,7 +52,7 @@ export const getManuscriptByEditor = async (req: Request, res: Response, next: N
     try {
         const editor: string | undefined = req.body.editor as string;
 
-        const filter = { editor };
+        const filter = { editor, status: "Pre-Review" };
 
         const manuscripts = await Manuscript.find(filter)
             .populate({
@@ -81,7 +81,7 @@ export const getManuscriptByReviewer = async (req: Request, res: Response, next:
         }
 
         // Query to match the reviewer's ID in the 'reviewers' array
-        const filter = { reviewers: { $in: [reviewerId] } };
+        const filter = { reviewers: { $in: [reviewerId] }, status: "Double-Blind" };
 
         // Fetch manuscripts that match the filter, including populated fields for editor and reviewers
         const manuscripts = await Manuscript.find(filter)
