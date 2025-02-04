@@ -52,7 +52,7 @@ export const getManuscriptByEditor = async (req: Request, res: Response, next: N
     try {
         const editor: string | undefined = req.body.editor as string;
 
-        const filter = { editor };
+        const filter = { editor, status: "Pre-Review" };
 
         const manuscripts = await Manuscript.find(filter)
             .populate({
@@ -73,24 +73,36 @@ export const getManuscriptByEditor = async (req: Request, res: Response, next: N
 
 export const getManuscriptByReviewer = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const reviewer: string | undefined = req.body.reviewer as string;
+        // Extract the reviewer's ID or email from the request body
+        const reviewerId: string = req.body.reviewer as string;
 
-        const filter = { reviewer: { $in: [reviewer] } };
+        if (!reviewerId) {
+            return next(errorResponse(400, "Reviewer ID is required"));
+        }
 
+        // Query to match the reviewer's ID in the 'reviewers' array
+        const filter = { reviewers: { $in: [reviewerId] }, status: "Double-Blind" };
+
+        // Fetch manuscripts that match the filter, including populated fields for editor and reviewers
         const manuscripts = await Manuscript.find(filter)
             .populate({
                 path: "editor",
                 select: "firstname middlename lastname email position department profileLink"
             })
-            .populate(["editor", "reviewers"])
+            .populate({
+                path: "reviewers",
+                select: "firstname middlename lastname email position department profileLink"
+            })
             .exec();
 
-        if (manuscripts) {
+        if (manuscripts.length > 0) {
             return jsonResponse(res, { status: 200, message: "Manuscripts fetched successfully", data: manuscripts });
         }
-        return next(errorResponse(400, "Manuscripts not found"));
+
+        return next(errorResponse(404, "No manuscripts found for the specified reviewer"));
     } catch (e) {
-        return next(errorResponse(400, (e as Error).message));
+        // Handle any errors and pass them to the next middleware
+        return next(errorResponse(500, (e as Error).message));
     }
 };
 
