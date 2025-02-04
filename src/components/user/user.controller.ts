@@ -5,6 +5,8 @@ import { extractErrorMessage } from "../../utils/extractJoiError";
 import bcrypt from "bcrypt";
 import User from "./user.model";
 import { generateToken } from "../../utils/jwtHelper";
+import Editor from "../editor/editor.model";
+import Reviewer from "../reviewer/reviewer.model";
 
 /*
  * Extra Handlers
@@ -112,6 +114,7 @@ export const loginUserByCredentials = async (req: Request, res: Response, next: 
     }
 
     try {
+        //Check user if exists
         const user = await User.findOne({ email: req.body.email });
         if (user) {
             if (!user.status) return next(errorResponse(401, "Account was deactivated"));
@@ -120,10 +123,42 @@ export const loginUserByCredentials = async (req: Request, res: Response, next: 
 
             if (validPassword) {
                 const token: string = generateToken({ _id: user._id });
-                return jsonResponse(res, { status: 200, message: "Login successful", data: { token, user } });
+                return jsonResponse(res, {
+                    status: 200,
+                    message: "Login successful",
+                    data: { token, user, type: user.role === 0 ? "director" : "staff" }
+                });
             }
+        }
 
-            return next(errorResponse(401, "Invalid email or password"));
+        //Chaeck editor if exists
+        const editor = await Editor.findOne({ email: req.body.email });
+        if (editor) {
+            const validPassword = await editor.isValidPassword(req.body.password);
+
+            if (validPassword) {
+                const token: string = generateToken({ _id: editor._id });
+                return jsonResponse(res, {
+                    status: 200,
+                    message: "Login successful",
+                    data: { token, user: editor, type: "editor" }
+                });
+            }
+        }
+
+        //Chaeck reviewer if exists
+        const reviewer = await Reviewer.findOne({ email: req.body.email });
+        if (reviewer) {
+            const validPassword = await reviewer.isValidPassword(req.body.password);
+
+            if (validPassword) {
+                const token: string = generateToken({ _id: reviewer._id });
+                return jsonResponse(res, {
+                    status: 200,
+                    message: "Login successful",
+                    data: { token, user: reviewer, type: "reviewer" }
+                });
+            }
         }
 
         return next(errorResponse(401, "Invalid email or password"));
